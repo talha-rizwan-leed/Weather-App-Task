@@ -1,5 +1,6 @@
 import { useState } from "react";
 import WeatherCard from '../components/WeatherCard'
+import { toast } from "react-toastify";
 
 export default function Hero({
     title = "Weather Forecasting App",
@@ -25,7 +26,8 @@ export default function Hero({
                 .then((data) => {
                     if (data.cod === "404") {
                         setWDetails(undefined);
-                        console.log("Error 404");
+                        // console.log("Error 404");
+                        toast.error("Error 404, Data Not Found !");
                     } else {
                         setWDetails(data);
                     }
