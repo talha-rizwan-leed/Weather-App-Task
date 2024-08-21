@@ -4,7 +4,7 @@ import { FaArrowCircleRight } from "react-icons/fa"
 import { Link } from "react-router-dom"
 
 // import Card from './Card'
-export default function HomeCard({ wDetails }) {
+export default function WeatherCard({ wDetails }) {
 
     // console.log(wDetails)
     return (

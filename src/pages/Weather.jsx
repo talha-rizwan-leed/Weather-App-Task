@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 import moment from "moment";
-import React from "react";
+import React from 'react';
+import axios from 'axios';
 import { FaArrowLeft } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 
@@ -8,6 +9,16 @@ export default function Weather() {
     const location = useLocation();
     const wDetails = location.state.wDetails;
     // console.log(wDetails);
+
+    const handlePostToFavourites = async () => {
+        try {
+            const response = await axios.post('http://localhost:5000/favourite', wDetails);
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <>
             {/* <section>
@@ -212,7 +223,9 @@ export default function Weather() {
                                     <p className="text-center">{wDetails.weather[0].main}</p>
                                 </div>
                             </div>
+
                         </main>
+                            <button className="text-white bg-indigo-700 hover:bg-indigo-900 rounded-md px-3 py-2 mt-4" onClick={handlePostToFavourites}>Add to Favourites</button>
                     </div>
                 </div>
             </section>

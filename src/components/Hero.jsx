@@ -1,5 +1,6 @@
 import { useState } from "react";
 import WeatherCard from '../components/WeatherCard'
+import Spinner from "../components/SpinLoad";
 import { toast } from "react-toastify";
 
 export default function Hero({
@@ -8,7 +9,7 @@ export default function Hero({
 }) {
     let [city, setCity] = useState("");
     let [wDetails, setWDetails] = useState();
-    // let [isLoading, setIsLoading] = useState(false);
+    let [loading, setLoading] = useState(true);
 
     const handleSearch = (event) => {
         event.preventDefault();
@@ -17,25 +18,26 @@ export default function Hero({
         fetchWeatherData(cityValue);
     };
 
-    const fetchWeatherData = (city) => {
+    const fetchWeatherData = async (city) => {
         try {
-            fetch(
-                `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=7715841c6944dd0d98f822a9495e2a7e&units=metric`
-            )
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.cod === "404") {
-                        setWDetails(undefined);
-                        // console.log("Error 404");
-                        toast.error("Error 404, Data Not Found !");
-                    } else {
-                        setWDetails(data);
-                    }
-                });
+            setTimeout(async () => {
+                const response = await fetch(
+                    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=7715841c6944dd0d98f822a9495e2a7e&units=metric`
+                );
+                const data = await response.json();
+                if (data.cod === "404") {
+                    setWDetails(undefined);
+                    toast.error("Error 404, Data Not Found !");
+                } else {
+                    setWDetails(data);
+                }
+            }, 0); // 2000ms = 2 seconds
         } catch (error) {
             console.log("Error fetching weather data", error);
         }
-        // event.preventDefault();
+        finally {
+            setLoading(false)
+        }
         setCity("");
     };
 
